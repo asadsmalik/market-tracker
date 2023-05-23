@@ -4,6 +4,8 @@ out/
 !**/src/test/**/out/
 *.iml
 .idea/
+build/
+gradle/
 
 ### Eclipse ###
 .apt_generated
@@ -29,3 +31,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+.gradle/
