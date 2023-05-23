@@ -18,6 +18,8 @@
 
 package org.ubiquify.market.tracker;
 
+import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
@@ -32,34 +34,18 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * <p>If you change the name of the main class (with the public static void main(String[] args))
  * method, change the respective entry in the POM.xml file (simply search for 'mainClass').
  */
-public class DataStreamJob {
+public class MarketTracker {
+
+	public static String INPUT_TICKERS_PATH = "tickers";
 
 	public static void main(String[] args) throws Exception {
-		// Sets up the execution environment, which is the main entry point
-		// to building Flink applications.
+		ParameterTool parameters = ParameterTool.fromArgs(args);
+		String inputTickersPath = parameters.get(INPUT_TICKERS_PATH);
+
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+		DataStream<String> inputTickers = env.readTextFile(inputTickersPath);
+		inputTickers.print();
 
-		/*
-		 * Here, you can start creating your execution plan for Flink.
-		 *
-		 * Start with getting some data from the environment, like
-		 * 	env.fromSequence(1, 10);
-		 *
-		 * then, transform the resulting DataStream<Long> using operations
-		 * like
-		 * 	.filter()
-		 * 	.flatMap()
-		 * 	.window()
-		 * 	.process()
-		 *
-		 * and many more.
-		 * Have a look at the programming guide:
-		 *
-		 * https://nightlies.apache.org/flink/flink-docs-stable/
-		 *
-		 */
-
-		// Execute program, beginning computation.
-		env.execute("Flink Java API Skeleton");
+		env.execute("Market Tracker");
 	}
 }
